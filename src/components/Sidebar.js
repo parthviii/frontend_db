@@ -2,7 +2,7 @@ import React from 'react';
 
 const Sidebar = () => {
   return (
-    <nav id="sidebar" className="text-bg-light p-4 " style={{ width: '20%', height: '100vh' }}>
+    <nav id="sidebar" className="text-bg-light p-4 " style={{ width: '20%', height: '100vh',border:"1px solid black" }}>
       
 
       <ul className="list-unstyled components">

@@ -4,15 +4,17 @@ import { Box, Button, Typography } from "@mui/material";
 import { FlexRowAlignCenter, FlexRowSpaceBetween } from "./Containers";
 
 const Header = () => {
+
+
   return (
-    <FlexRowSpaceBetween style={{ padding: "10px" }}>
+    <FlexRowSpaceBetween style={{ padding: "10px",backgroundColor: "#C2E6F4" }}>
       <Typography
         variant="h4"
         noWrap
         component="div"
         sx={{ display: { xs: "none", sm: "block" } }}
       >
-        Company Name
+        Bond Guard
       </Typography>
       <Button size="small" variant="contained">
         <Typography
