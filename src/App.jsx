@@ -107,18 +107,19 @@ const data = [
 
 const App = () => {
   return (
-    <Container fluid>
+    <Container fluid className="contain">
     <Navbar/>
+    <Header/>
   <Row>
     <Col xs={12} md={2}>  
       <Sidebar/>
     </Col>
     <Col xs={12} md={10}>
-    <SearchBar />
+    <SearchBar /> 
       {/* Your content for the right two-thirds of the dashboard */}
       <TableComponent data={data}/>
-    </Col>
-  </Row>
+    </Col> 
+   </Row>
 </Container>
 
   );

@@ -7,7 +7,7 @@ const Header = () => {
 
 
   return (
-    <FlexRowSpaceBetween style={{ padding: "10px",backgroundColor: "#C2E6F4" }}>
+    <FlexRowSpaceBetween  className="grad" style={{ padding: "1rem",backgroundColor: "#C2E6F4",marginBottom:"10px" }}>
       <Typography
         variant="h4"
         noWrap

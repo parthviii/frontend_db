@@ -7,6 +7,27 @@
   pointer-events: none;
 }
 
+.topheader{
+  background-color:white;
+}
+
+.grad{
+  
+  background-color: white;
+}
+
+.contain{
+  background-color:#F3F0EC;
+}
+
+.temp{
+  margin-top:1rem;
+}
+
+ td,th {
+  text-align: center;
+} 
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

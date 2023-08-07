@@ -29,7 +29,7 @@ const TableComponent = ({ data }) => {
 
   return (
     <section>
-      <div className="container card card-body ">
+      <div className="container card card-body temp">
         <Table
           responsive
           hover={true}
