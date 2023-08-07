@@ -14,7 +14,7 @@ const Header = () => {
         component="div"
         sx={{ display: { xs: "none", sm: "block" } }}
       >
-        Bond Guard
+        Mature Guard
       </Typography>
       <Button size="small" variant="contained">
         <Typography
