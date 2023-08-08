@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Table, Pagination } from "react-bootstrap";
 import { Chip } from "@mui/material";
 import { FlexColumnAlignCenter } from "./Containers";
@@ -16,17 +16,48 @@ export const tableHeaders = [
   "Status",
 ];
 
-const TableComponent = ({ data, selectedItems, setSelectedItems, filter }) => {
+const TableComponent = ({
+  data,
+  selectedItems,
+  setSelectedItems,
+  filter,
+  setCsvData,
+}) => {
   let checkedItems = selectedItems;
-   console.log(data);
 
-  const handleCheckboxChange = (itemId, index) => {
-    if (document.getElementById(itemId).checked) {
+  const handleCheckboxChange = (index, e) => {
+    if (e.target.checked) {
       checkedItems.push(data[index]);
     } else {
       checkedItems.splice(index, 1);
     }
     setSelectedItems(checkedItems);
+    setCsvData([
+      tableHeaders,
+      ...selectedItems.map(
+        ({
+          id,
+          isin,
+          cusip,
+          issuer,
+          maturitydate,
+          coupon,
+          type,
+          facevalue,
+          status,
+        }) => [
+          id,
+          isin,
+          cusip,
+          issuer,
+          maturitydate,
+          coupon,
+          type,
+          facevalue,
+          status,
+        ]
+      ),
+    ]);
   };
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -105,7 +136,7 @@ const TableComponent = ({ data, selectedItems, setSelectedItems, filter }) => {
                       type="checkbox"
                       id={item.id}
                       className="custom-checkbox"
-                      onChange={() => handleCheckboxChange(item.id, index)}
+                      onChange={(e) => handleCheckboxChange(index, e)}
                     />
                   </td>
                   <td>{item.id}</td>
@@ -119,7 +150,7 @@ const TableComponent = ({ data, selectedItems, setSelectedItems, filter }) => {
                   <td>
                     <Chip
                       label={item.status}
-                      color={item.status === "Active" ? "success" : "error"}
+                      color={item.status === "active" ? "success" : "error"}
                       variant="filled"
                     />
                   </td>

@@ -6,7 +6,12 @@ const Navbar = () => {
     <nav className="navbar navbar-expand-lg bg-body-tertiary top">
       <div className="container-fluid">
         <a className="navbar-brand" href="#">
-          <Image alt="Logo" src="public\bondmate1.png" />
+          <img
+            alt="app logo"
+            length="50em"
+            width="50em"
+            src={require("./images/2-removebg-preview.png")}
+          />
         </a>
         <button
           className="navbar-toggler"
