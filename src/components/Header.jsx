@@ -4,13 +4,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import { FlexRowSpaceBetween } from "./Containers";
 import { Typography, Button, Drawer, Box, TextField } from "@mui/material";
 
-function DatePickerApp() {
-  const [inputValue, setInputValue] = useState("");
-
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-  };
-}
 const Header = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [id, setID] = useState("");
