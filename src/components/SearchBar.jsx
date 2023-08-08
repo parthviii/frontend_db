@@ -113,6 +113,11 @@ const SearchBar = ({ data, filter }) => {
     setSearch(event.target.value);
   };
 
+    // Function to update 'tableData' state after delete operation
+    const updateTableData = (updatedData) => {
+      setData({ nodes: updatedData });
+    };
+
   const compare = (a, b) => {
     a = a.maturitydate.split("-").join("");
     b = b.maturitydate.split("-").join("");
@@ -262,6 +267,7 @@ const SearchBar = ({ data, filter }) => {
         setSelectedItems={setSelectedItems}
         filter={filter}
         setCsvData={setCsvData}
+        updateTableData={updateTableData}
       />
     </>
   );

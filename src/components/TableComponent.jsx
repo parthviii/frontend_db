@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Form, Table, Pagination } from "react-bootstrap";
-import { Chip } from "@mui/material";
+import { Chip, IconButton } from "@mui/material";
 import { FlexColumnAlignCenter } from "./Containers";
 import { Typography } from "@mui/material";
+import Box from '@mui/material/Box';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import axios from 'axios'
 
 export const tableHeaders = [
   "Security ID",
@@ -14,6 +17,7 @@ export const tableHeaders = [
   "Type",
   "Face Value",
   "Status",
+  null
 ];
 
 const TableComponent = ({
@@ -22,6 +26,7 @@ const TableComponent = ({
   setSelectedItems,
   filter,
   setCsvData,
+  updateTableData
 }) => {
   let checkedItems = selectedItems;
 
@@ -45,6 +50,7 @@ const TableComponent = ({
           type,
           facevalue,
           status,
+          
         }) => [
           id,
           isin,
@@ -59,7 +65,7 @@ const TableComponent = ({
       ),
     ]);
   };
-
+ 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   let filteredData = data;
@@ -105,11 +111,21 @@ const TableComponent = ({
   const handlePagination = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
+  const handleChangeDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:9090/bonds/security/delete?id=${id}`);
+      const updatedData = data.filter(item => item.id !== id);
+      // Call the function to update 'tableData' state in parent component
+      updateTableData(updatedData);
+    } catch (error) {
+      console.error("An error occurred while deleting:", error);
+      // Handle error here, display an error message, etc.
+    }
+  };  
   return (
-    <section>
+    <Box>
       {data.length > 0 ? (
-        <div className="container card card-body temp">
+        <Box className="container card card-body temp" style={{width: "100%", margin: "0px", maxWidth: "100%"}}>
           <Table
             responsive
             hover={true}
@@ -155,6 +171,11 @@ const TableComponent = ({
                       variant="filled"
                     />
                   </td>
+                  <td>
+                  <IconButton onClick={() => handleChangeDelete(item.id)}>
+            <DeleteOutlineIcon />
+          </IconButton>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -172,7 +193,7 @@ const TableComponent = ({
               ))}
             </Pagination>
           </ul>
-        </div>
+        </Box>
       ) : (
         <FlexColumnAlignCenter
           style={{
@@ -190,7 +211,7 @@ const TableComponent = ({
           </Typography>
         </FlexColumnAlignCenter>
       )}
-    </section>
+    </Box>
   );
 };
 
