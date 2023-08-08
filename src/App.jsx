@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from "react";
 import Login from "./components/Login";
-import {BrowserRouter,Route,Routes} from 'react-router-dom'
+import {BrowserRouter,Route,Routes} from 'react-router-dom';
 import Dashboard from "./components/Dashboard";
 const App = () => {
   return (
