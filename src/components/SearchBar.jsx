@@ -11,6 +11,7 @@ import SwapVertIcon from "@mui/icons-material/SwapVert";
 import UpgradeIcon from "@mui/icons-material/Upgrade";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import { CSVLink } from "react-csv";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -62,20 +63,21 @@ const SearchBar = ({ data, filter }) => {
   const [tableData, setData] = React.useState({ nodes: data });
   const [isdataSorted, setDataSorted] = React.useState(0);
   const [selectedItems, setSelectedItems] = React.useState([]);
+  const [csvData, setCsvData] = React.useState([]);
+
   React.useEffect(() => {
-    if(search.length>0){
-    const filteredData = {
-      nodes: data.filter((item) =>
-        item.id.toString().includes(search.toLowerCase())
-      ),
-    };
-    setData(filteredData);
-  }
-  else{
-    setData({nodes:data});
-  }
-  }, [search,data]);
-  
+    if (search.length > 0) {
+      const filteredData = {
+        nodes: data.filter((item) =>
+          item.id.toString().includes(search.toLowerCase())
+        ),
+      };
+      setData(filteredData);
+    } else {
+      setData({ nodes: data });
+    }
+  }, [search, data]);
+
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
@@ -108,17 +110,6 @@ const SearchBar = ({ data, filter }) => {
       setDataSorted(-1);
     }
     setData(sortedData);
-  };
-
-  const exportData = () => {
-    let csvContent =
-      "data:text/csv;charset=utf-8," +
-      tableHeaders.join(",") +
-      "\n" +
-      selectedItems.map((e) => Object.values(e).join(",")).join("\n");
-
-    var encodedUri = encodeURI(csvContent);
-    window.open(encodedUri);
   };
 
   return (
@@ -160,17 +151,23 @@ const SearchBar = ({ data, filter }) => {
                 Sort by maturity date
               </Typography>
             </Button>
-            <Button size="small" variant="outlined" onClick={exportData}>
-              <UpgradeIcon />
-              <Typography
-                variant="body1"
-                noWrap
-                component="div"
-                sx={{ display: { xs: "none", sm: "block" } }}
-              >
-                Export
-              </Typography>
-            </Button>
+            <CSVLink
+              className="downloadbtn"
+              filename="my-file.csv"
+              data={csvData}
+            >
+              <Button size="small" variant="outlined">
+                <UpgradeIcon />
+                <Typography
+                  variant="body1"
+                  noWrap
+                  component="div"
+                  sx={{ display: { xs: "none", sm: "block" } }}
+                >
+                  Export to CSV
+                </Typography>
+              </Button>
+            </CSVLink>
           </Box>
         </Toolbar>
       </Box>
@@ -179,6 +176,7 @@ const SearchBar = ({ data, filter }) => {
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
         filter={filter}
+        setCsvData={setCsvData}
       />
     </>
   );

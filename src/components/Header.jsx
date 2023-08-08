@@ -18,6 +18,7 @@ const Header = () => {
         noWrap
         component="div"
         sx={{ display: { xs: "none", sm: "block" } }}
+        color="#2e5e80"
       >
         BondMate
       </Typography>
