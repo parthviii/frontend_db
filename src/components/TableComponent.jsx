@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Form, Table, Pagination } from "react-bootstrap";
 import { Chip } from "@mui/material";
 import { FlexColumnAlignCenter } from "./Containers";
@@ -18,6 +18,7 @@ export const tableHeaders = [
 
 const TableComponent = ({ data, selectedItems, setSelectedItems, filter }) => {
   let checkedItems = selectedItems;
+   console.log(data);
 
   const handleCheckboxChange = (itemId, index) => {
     if (document.getElementById(itemId).checked) {

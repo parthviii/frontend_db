@@ -62,16 +62,20 @@ const SearchBar = ({ data, filter }) => {
   const [tableData, setData] = React.useState({ nodes: data });
   const [isdataSorted, setDataSorted] = React.useState(0);
   const [selectedItems, setSelectedItems] = React.useState([]);
-
   React.useEffect(() => {
+    if(search.length>0){
     const filteredData = {
       nodes: data.filter((item) =>
-        item.id.toLowerCase().includes(search.toLowerCase())
+        item.id.toString().includes(search.toLowerCase())
       ),
     };
     setData(filteredData);
-  }, [search]);
-
+  }
+  else{
+    setData({nodes:data});
+  }
+  }, [search,data]);
+  
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
