@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { Button } from "@mui/material";
-import TableComponent from "./TableComponent";
+import TableComponent, { tableHeaders } from "./TableComponent";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import UpgradeIcon from "@mui/icons-material/Upgrade";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
@@ -107,10 +107,12 @@ const SearchBar = ({ data, filter }) => {
   };
 
   const exportData = () => {
-    console.log(selectedItems);
     let csvContent =
       "data:text/csv;charset=utf-8," +
-      selectedItems.map((e) => e.join(",")).join("\n");
+      tableHeaders.join(",") +
+      "\n" +
+      selectedItems.map((e) => Object.values(e).join(",")).join("\n");
+
     var encodedUri = encodeURI(csvContent);
     window.open(encodedUri);
   };

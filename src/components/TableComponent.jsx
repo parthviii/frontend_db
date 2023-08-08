@@ -4,6 +4,18 @@ import { Chip } from "@mui/material";
 import { FlexColumnAlignCenter } from "./Containers";
 import { Typography } from "@mui/material";
 
+export const tableHeaders = [
+  "Security ID",
+  "ISIN",
+  "CusIP",
+  "Issuer",
+  "Maturity Date",
+  "Coupon",
+  "Type",
+  "Face Value",
+  "Status",
+];
+
 const TableComponent = ({ data, selectedItems, setSelectedItems, filter }) => {
   let checkedItems = selectedItems;
 
@@ -74,15 +86,9 @@ const TableComponent = ({ data, selectedItems, setSelectedItems, filter }) => {
             <thead>
               <tr className="table-primary">
                 <th>Select</th>
-                <th>Security ID</th>
-                <th>ISIN</th>
-                <th>CusIP</th>
-                <th>Issuer</th>
-                <th>Maturity Date</th>
-                <th>Coupon</th>
-                <th>Type</th>
-                <th>Face Value</th>
-                <th>Status</th>
+                {tableHeaders.map((header) => (
+                  <th>{header}</th>
+                ))}
               </tr>
             </thead>
             <tbody>
