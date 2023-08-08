@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import SearchBar from "./components/SearchBar";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
@@ -48,7 +48,7 @@ const data = [
   isin: "US9128283C60",
   cusip: "9128283C6",
   issuer: "United States Department of the Treasury",
-  maturitydate: "2023-08-07",
+  maturitydate: "2023-09-15",
   coupon: "1.3",
   type: "Goverment Bond",
   facevalue: "1000.0",
@@ -83,7 +83,7 @@ const data = [
   isin: "US9128283C60",
   cusip: "9128283C6",
   issuer: "United States Department of the Treasury",
-  maturitydate: "2023-08-07",
+  maturitydate: "2023-12-07",
   coupon: "1.3",
   type: "Goverment Bond",
   facevalue: "1000.0",
@@ -95,7 +95,7 @@ const data = [
   isin: "US9128283C60",
   cusip: "9128283C6",
   issuer: "United States Department of the Treasury",
-  maturitydate: "2023-08-07",
+  maturitydate: "2023-10-07",
   coupon: "1.3",
   type: "Goverment Bond",
   facevalue: "1000.0",
@@ -106,18 +106,20 @@ const data = [
 ];
 
 const App = () => {
+  const [filter, setFilter] = useState("all"); // Initialize with default filter
+
   return (
     <Container fluid className="contain">
     <Navbar/>
     <Header/>
   <Row>
     <Col xs={12} md={2}>  
-      <Sidebar/>
+      <Sidebar setFilter={setFilter}/>
     </Col>
     <Col xs={12} md={10}>
     <SearchBar /> 
       {/* Your content for the right two-thirds of the dashboard */}
-      <TableComponent data={data}/>
+      <TableComponent data={data} filter={filter}/>
     </Col> 
    </Row>
 </Container>
