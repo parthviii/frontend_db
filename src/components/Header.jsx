@@ -1,21 +1,8 @@
 import React, { useState } from "react";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { FlexRowAlignCenter, FlexRowSpaceBetween } from "./Containers";
-import {
-  Typography,
-  Button,
-  Modal,
-  FormControl,
-  InputLabel,
-  Input,
-  Drawer,
-  Box,
-  Autocomplete,
-  TextField,
-} from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
-import { cleanDigitSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
+import { FlexRowSpaceBetween } from "./Containers";
+import { Typography, Button, Drawer, Box, TextField } from "@mui/material";
 
 function DatePickerApp() {
   const [inputValue, setInputValue] = useState("");
