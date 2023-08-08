@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import '../styles/Login.css';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import "../styles/Login.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-export default function Login() {
-  const [email, setEmail] = useState("");
+export default function Login({ email, setEmail }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -20,18 +19,19 @@ export default function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("http://localhost:9090/bonds/user/login", {
-        email,
-        password,
-      });
-
+      const response = await axios.post(
+        "http://localhost:9090/bonds/user/login",
+        {
+          email,
+          password,
+        }
+      );
       if (response.data === "invalid") {
         setError("Invalid email or password");
         alert("Invalid Credentials! Please try again");
-       
       } else {
         const userRole = response.data.role;
-        navigate('/dashboard');
+        navigate("/dashboard");
       }
     } catch (error) {
       setError("Invalid email or password");
@@ -43,8 +43,11 @@ export default function Login() {
       <div class="container-fluid h-custom">
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col-md-9 col-lg-6 col-xl-5">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-              class="img-fluid" alt="Sample image" />
+            <img
+              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+              class="img-fluid"
+              alt="Sample image"
+            />
           </div>
           <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
             <form onSubmit={handleSubmit}>
