@@ -4,13 +4,40 @@ import { Chip } from "@mui/material";
 import { FlexColumnAlignCenter } from "./Containers";
 import { Typography } from "@mui/material";
 
-const TableComponent = ({ data, selectedItems, setSelectedItems }) => {
+
+const TableComponent = ({ data, selectedItems, setSelectedItems, filter }) => {
   const handleCheckboxChange = (itemId, index) => {
     setSelectedItems([...selectedItems, data[index]]);
+
+
   };
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+  let filteredData = data;
+const currentDate = new Date(); // Current date
+
+if (filter === "matured") {
+  filteredData = data.filter((item) => new Date(item.maturitydate) <= currentDate);
+} else if (filter === "pending") {
+  filteredData = data.filter((item) => new Date(item.maturitydate) > currentDate);
+} else if (filter === "flagged") {
+  filteredData = filteredData.filter(
+    (item) =>
+      new Date(item.maturitydate) < currentDate &&
+      item.status === "Active"
+  );
+}else if (filter === "upcoming") {
+  const tenDaysLater = new Date();
+  tenDaysLater.setDate(tenDaysLater.getDate() + 10);
+
+  filteredData = filteredData.filter(
+    (item) =>
+      new Date(item.maturitydate) > currentDate &&
+      new Date(item.maturitydate) <= tenDaysLater
+  );
+}
+
 
   // Calculate the index of the last item of the current page
   const lastIndex = currentPage * itemsPerPage;
@@ -19,10 +46,10 @@ const TableComponent = ({ data, selectedItems, setSelectedItems }) => {
   const firstIndex = lastIndex - itemsPerPage;
 
   // Get the items for the current page
-  const currentItems = data.slice(firstIndex, lastIndex);
+  let currentItems = filteredData.slice(firstIndex, lastIndex);
 
   // Calculate the total number of pages
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   // Change the current page number
   const handlePagination = (pageNumber) => {
