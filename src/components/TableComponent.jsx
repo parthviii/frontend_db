@@ -137,6 +137,7 @@ const TableComponent = ({
                       id={item.id}
                       className="custom-checkbox"
                       onChange={(e) => handleCheckboxChange(index, e)}
+                      style={{ paddingLeft: "2em" }}
                     />
                   </td>
                   <td>{item.id}</td>
