@@ -4,40 +4,46 @@ import { Chip } from "@mui/material";
 import { FlexColumnAlignCenter } from "./Containers";
 import { Typography } from "@mui/material";
 
-
 const TableComponent = ({ data, selectedItems, setSelectedItems, filter }) => {
+  let checkedItems = selectedItems;
+
   const handleCheckboxChange = (itemId, index) => {
-    setSelectedItems([...selectedItems, data[index]]);
-
-
+    if (document.getElementById(itemId).checked) {
+      checkedItems.push(data[index]);
+    } else {
+      checkedItems.splice(index, 1);
+    }
+    setSelectedItems(checkedItems);
   };
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   let filteredData = data;
-const currentDate = new Date(); // Current date
+  const currentDate = new Date(); // Current date
 
-if (filter === "matured") {
-  filteredData = data.filter((item) => new Date(item.maturitydate) <= currentDate);
-} else if (filter === "pending") {
-  filteredData = data.filter((item) => new Date(item.maturitydate) > currentDate);
-} else if (filter === "flagged") {
-  filteredData = filteredData.filter(
-    (item) =>
-      new Date(item.maturitydate) < currentDate &&
-      item.status === "Active"
-  );
-}else if (filter === "upcoming") {
-  const tenDaysLater = new Date();
-  tenDaysLater.setDate(tenDaysLater.getDate() + 10);
+  if (filter === "matured") {
+    filteredData = data.filter(
+      (item) => new Date(item.maturitydate) <= currentDate
+    );
+  } else if (filter === "pending") {
+    filteredData = data.filter(
+      (item) => new Date(item.maturitydate) > currentDate
+    );
+  } else if (filter === "flagged") {
+    filteredData = filteredData.filter(
+      (item) =>
+        new Date(item.maturitydate) < currentDate && item.status === "Active"
+    );
+  } else if (filter === "upcoming") {
+    const tenDaysLater = new Date();
+    tenDaysLater.setDate(tenDaysLater.getDate() + 10);
 
-  filteredData = filteredData.filter(
-    (item) =>
-      new Date(item.maturitydate) > currentDate &&
-      new Date(item.maturitydate) <= tenDaysLater
-  );
-}
-
+    filteredData = filteredData.filter(
+      (item) =>
+        new Date(item.maturitydate) > currentDate &&
+        new Date(item.maturitydate) <= tenDaysLater
+    );
+  }
 
   // Calculate the index of the last item of the current page
   const lastIndex = currentPage * itemsPerPage;
@@ -90,6 +96,7 @@ if (filter === "matured") {
                   <td>
                     <Form.Check
                       type="checkbox"
+                      id={item.id}
                       className="custom-checkbox"
                       onChange={() => handleCheckboxChange(item.id, index)}
                     />
