@@ -57,21 +57,23 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const SearchBar = ({ data }) => {
+const SearchBar = ({ data, filter }) => {
   const [search, setSearch] = React.useState("");
   const [tableData, setData] = React.useState({ nodes: data });
   const [isdataSorted, setDataSorted] = React.useState(0);
   const [selectedItems, setSelectedItems] = React.useState([]);
 
-  console.log(selectedItems);
-  const handleSearch = (event) => {
-    setSearch(event.target.value);
+  React.useEffect(() => {
     const filteredData = {
       nodes: data.filter((item) =>
         item.id.toLowerCase().includes(search.toLowerCase())
       ),
     };
     setData(filteredData);
+  }, [search]);
+
+  const handleSearch = (event) => {
+    setSearch(event.target.value);
   };
 
   const compare = (a, b) => {
@@ -102,6 +104,15 @@ const SearchBar = ({ data }) => {
       setDataSorted(-1);
     }
     setData(sortedData);
+  };
+
+  const exportData = () => {
+    console.log(selectedItems);
+    let csvContent =
+      "data:text/csv;charset=utf-8," +
+      selectedItems.map((e) => e.join(",")).join("\n");
+    var encodedUri = encodeURI(csvContent);
+    window.open(encodedUri);
   };
 
   return (
@@ -143,7 +154,7 @@ const SearchBar = ({ data }) => {
                 Sort by maturity date
               </Typography>
             </Button>
-            <Button size="small" variant="outlined">
+            <Button size="small" variant="outlined" onClick={exportData}>
               <UpgradeIcon />
               <Typography
                 variant="body1"
@@ -161,6 +172,7 @@ const SearchBar = ({ data }) => {
         data={tableData.nodes}
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
+        filter={filter}
       />
     </>
   );
