@@ -22,7 +22,6 @@ function Dashboard() {
       console.error("Error fetching data:", error);
     });
     },[]);
-    console.log(data);
     const [filter, setFilter] = useState("all"); // Initialize with default filter
   return (
     <Container fluid className="contain">
@@ -33,7 +32,7 @@ function Dashboard() {
         <Sidebar setFilter={setFilter} />
       </Col>
       <Col xs={12} md={10}>
-        <SearchBar data={data} filter={filter} />
+        <SearchBar data={data} filter={filter}  />
         {/* Your content for the right two-thirds of the dashboard */}
       </Col>
     </Row>
