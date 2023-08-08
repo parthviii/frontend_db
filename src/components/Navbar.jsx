@@ -1,7 +1,13 @@
 import React from "react";
 import { Image } from "react-bootstrap";
-
+import { useNavigate } from 'react-router-dom';
+import '../styles/Navbar.css';
 const Navbar = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    navigate('/');
+  };
+
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary top">
       <div className="container-fluid">
@@ -42,8 +48,13 @@ const Navbar = () => {
               </a>
             </li>
           </ul>
-
-          <a className="nav-link active">Logout</a>
+          <ul className="navbar-nav ml-auto mb-2 mb-lg-0"> {/* Use ml-auto to push the items to the right */}
+            <li className="nav-item">
+              <button className="nav-link logout-button" onClick={handleLogout} >
+                Logout
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>
