@@ -6,6 +6,11 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { Button } from "@mui/material";
+import TableComponent from "./TableComponent";
+import SwapVertIcon from "@mui/icons-material/SwapVert";
+import UpgradeIcon from "@mui/icons-material/Upgrade";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -52,47 +57,113 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function SearchBar() {
+const SearchBar = ({ data }) => {
+  const [search, setSearch] = React.useState("");
+  const [tableData, setData] = React.useState({ nodes: data });
+  const [isdataSorted, setDataSorted] = React.useState(0);
+  const [selectedItems, setSelectedItems] = React.useState([]);
+
+  console.log(selectedItems);
+  const handleSearch = (event) => {
+    setSearch(event.target.value);
+    const filteredData = {
+      nodes: data.filter((item) =>
+        item.id.toLowerCase().includes(search.toLowerCase())
+      ),
+    };
+    setData(filteredData);
+  };
+
+  const compare = (a, b) => {
+    a = a.maturitydate.split("-").join("");
+    b = b.maturitydate.split("-").join("");
+    if (a < b) {
+      return -1;
+    }
+    if (a > b) {
+      return 1;
+    }
+    return 0;
+  };
+
+  const sortByDate = () => {
+    let sortedData = {
+      nodes: data.sort(compare),
+    };
+
+    if (isdataSorted === 0) {
+      setDataSorted(1);
+    } else if (isdataSorted < 0) {
+      setDataSorted(1);
+    } else {
+      sortedData = {
+        nodes: data.sort(compare).reverse(),
+      };
+      setDataSorted(-1);
+    }
+    setData(sortedData);
+  };
+
   return (
-    <Box
-      sx={{ flexGrow: 1 }}
-      height={"fit-content"}
-      backgroundColor={"lightgray"}
-    >
-      <Toolbar style={{ padding: "10px" }}>
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Search by Security ID"
-            inputProps={{ "aria-label": "search" }}
-          />
-        </Search>
-        <Box sx={{ flexGrow: 1 }} />
-        <Box sx={{ display: { xs: "none", md: "flex", columnGap: "20px" } }}>
-          <Button size="small" variant="outlined">
-            <Typography
-              variant="body1"
-              noWrap
-              component="div"
-              sx={{ display: { xs: "none", sm: "block" } }}
-            >
-              Sort
-            </Typography>
-          </Button>
-          <Button size="small" variant="outlined">
-            <Typography
-              variant="body1"
-              noWrap
-              component="div"
-              sx={{ display: { xs: "none", sm: "block" } }}
-            >
-              Export
-            </Typography>
-          </Button>
-        </Box>
-      </Toolbar>
-    </Box>
+    <>
+      <Box
+        sx={{ flexGrow: 1 }}
+        height={"fit-content"}
+        backgroundColor={"lightgray"}
+      >
+        <Toolbar style={{ paddingLeft: "0.00001em", paddingRight: "1.3em" }}>
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search by Security ID"
+              inputProps={{ "aria-label": "search" }}
+              id="search"
+              type="text"
+              onChange={handleSearch}
+            />
+          </Search>
+          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ display: { xs: "none", md: "flex", columnGap: "20px" } }}>
+            <Button size="small" variant="outlined" onClick={sortByDate}>
+              {isdataSorted === 0 ? (
+                <SwapVertIcon />
+              ) : isdataSorted < 0 ? (
+                <ArrowDownwardIcon />
+              ) : (
+                <ArrowUpwardIcon />
+              )}
+              <Typography
+                variant="body1"
+                noWrap
+                component="div"
+                sx={{ display: { xs: "none", sm: "block" } }}
+              >
+                Sort by maturity date
+              </Typography>
+            </Button>
+            <Button size="small" variant="outlined">
+              <UpgradeIcon />
+              <Typography
+                variant="body1"
+                noWrap
+                component="div"
+                sx={{ display: { xs: "none", sm: "block" } }}
+              >
+                Export
+              </Typography>
+            </Button>
+          </Box>
+        </Toolbar>
+      </Box>
+      <TableComponent
+        data={tableData.nodes}
+        selectedItems={selectedItems}
+        setSelectedItems={setSelectedItems}
+      />
+    </>
   );
-}
+};
+
+export default SearchBar;
