@@ -1,9 +1,6 @@
 import React from "react";
-import { Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "../styles/Navbar.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import CustomDashboard from "./CustomDashboard";
 
 const Navbar = () => {
   const navigate = useNavigate();
