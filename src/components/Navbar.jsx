@@ -41,6 +41,7 @@ const Navbar = () => {
                 style={{color: "white", fontWeight: "500"}} className="nav-link active"
                 aria-current="page"
                 href="/customDashboard"
+
               >
                 Custom DashBoard
               </a>
