@@ -25,7 +25,7 @@ function Dashboard() {
     console.log(data);
     const [filter, setFilter] = useState("all"); // Initialize with default filter
   return (
-    <Container fluid className="contain">
+    <Container fluid className="contain" style={{padding: "0px"}}>
     <Navbar />
     <Header />
     <Row>

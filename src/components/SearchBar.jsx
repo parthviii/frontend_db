@@ -117,7 +117,8 @@ const SearchBar = ({ data, filter }) => {
       <Box
         sx={{ flexGrow: 1 }}
         height={"fit-content"}
-        backgroundColor={"lightgray"}
+        backgroundColor={"darkgrey"}
+        style={{borderRadius: "12px"}}
       >
         <Toolbar style={{ paddingLeft: "0.00001em", paddingRight: "1.3em" }}>
           <Search>
@@ -134,7 +135,7 @@ const SearchBar = ({ data, filter }) => {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex", columnGap: "20px" } }}>
-            <Button size="small" variant="outlined" onClick={sortByDate}>
+            <Button size="small" variant="outlined" style={{backgroundColor: "white"}} onClick={sortByDate}>
               {isdataSorted === 0 ? (
                 <SwapVertIcon />
               ) : isdataSorted < 0 ? (
@@ -146,6 +147,7 @@ const SearchBar = ({ data, filter }) => {
                 variant="body1"
                 noWrap
                 component="div"
+                style={{fontWeight: "bold"}}
                 sx={{ display: { xs: "none", sm: "block" } }}
               >
                 Sort by maturity date
@@ -156,12 +158,13 @@ const SearchBar = ({ data, filter }) => {
               filename="my-file.csv"
               data={csvData}
             >
-              <Button size="small" variant="outlined">
+              <Button size="small" variant="outlined" style={{backgroundColor: "white"}}>
                 <UpgradeIcon />
                 <Typography
                   variant="body1"
                   noWrap
                   component="div"
+                  style={{fontWeight: "bold"}}
                   sx={{ display: { xs: "none", sm: "block" } }}
                 >
                   Export to CSV
