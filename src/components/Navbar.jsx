@@ -34,9 +34,10 @@ const Navbar = () => {
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <a
-                className="nav-link active"
+                className="nav-link active link-dark"
                 aria-current="page"
                 href="/customDashboard"
+
               >
                 Custom DashBoard
               </a>
