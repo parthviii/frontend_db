@@ -15,7 +15,7 @@ const Header = () => {
   const [coupon, setCoupon] = useState("");
   const [facevalue, setFace] = useState("");
   const [items, setItems] = useState([]);
-  const [status, setStatus] = useState("Active");
+  const [status, setStatus] = useState("active");
   const [selectedDate, setSelectedDate] = useState(null);
 
   const openForm = () => {
@@ -49,11 +49,10 @@ const Header = () => {
     };
     setItems([...items, newItem]);
     console.log(newItem);
-    // Send data to backend
+    
     fetch("http://localhost:9090/bonds/security/create", {
       method: "POST",
       headers: {
-        Accept: "application/json, text/plain, */*",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(newItem),
@@ -65,9 +64,7 @@ const Header = () => {
       .catch((error) => {
         console.error("Error sending data to backend:", error);
       });
-    //  .then(data => this.setState({ creditcards: data.creditcards }))
-    //  .catch(error => this.setState({ error }));
-
+      
     closeForm();
   };
 

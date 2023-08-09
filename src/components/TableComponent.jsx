@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import axios from 'axios'
 
+import { useNavigate, useNavigation } from "react-router-dom";
 export const tableHeaders = [
   "Security ID",
   "ISIN",
@@ -29,7 +30,7 @@ const TableComponent = ({
   updateTableData
 }) => {
   let checkedItems = selectedItems;
-
+   
   const handleCheckboxChange = (index, e) => {
     if (e.target.checked) {
       checkedItems.push(data[index]);
@@ -122,6 +123,12 @@ const TableComponent = ({
       // Handle error here, display an error message, etc.
     }
   };  
+  const navigate = useNavigate()
+ const handleChange = (id) =>{
+  console.log(id);
+  
+ navigate(`/securityDetail/${id}`)
+ }
   return (
     <Box>
       {data.length > 0 ? (
@@ -142,6 +149,7 @@ const TableComponent = ({
             <tbody>
               {currentItems.map((item, index) => (
                 <tr
+                
                   key={item.id}
                   style={{
                     backgroundColor: index % 2 === 0 ? "#f2f2f2" : "white",
@@ -157,7 +165,9 @@ const TableComponent = ({
                     />
                   </td>
                   <td>{item.id}</td>
-                  <td>{item.isin}</td>
+                  <td onClick={()=>handleChange(item.id)}>
+  {item.isin}
+</td>
                   <td>{item.cusip}</td>
                   <td>{item.issuer}</td>
                   <td>{item.maturitydate}</td>
