@@ -3,6 +3,7 @@ import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { FlexRowSpaceBetween } from "./Containers";
 import { Typography, Button, Drawer, Box, TextField } from "@mui/material";
+import Autocomplete from '@mui/material/Autocomplete';
 
 const Header = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -15,7 +16,7 @@ const Header = () => {
   const [coupon, setCoupon] = useState("");
   const [facevalue, setFace] = useState("");
   const [items, setItems] = useState([]);
-  const [status, setStatus] = useState("active");
+  const [status, setStatus] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
 
   const openForm = () => {
@@ -149,7 +150,6 @@ const Header = () => {
             padding: "20px",
             backgroundColor: "#fff",
             borderRadius: "5px",
-            height: "100%",
           }}
         >
           <Box style={{ padding: "10px 10px" }}>
@@ -226,9 +226,20 @@ const Header = () => {
               onChange={(e) => setFace(e.target.value)}
             />
           </Box>
-          <Button variant="contained" onClick={handleSubmit}>
-            Save
-          </Button>
+          <Box style={{ padding: "10px 10px" }}>
+            <Autocomplete
+            label="Status"
+            options={["inactive", "active"]}
+            value={status}
+            onChange={(event, newValue) => {
+              setStatus(newValue);
+            }}
+            renderInput={(params) => <TextField {...params} label="Status" />}
+          />
+          </Box>
+            <Button variant="contained" onClick={handleSubmit}>
+              Save
+            </Button>
         </Box>
       </Drawer>
     </FlexRowSpaceBetween>
