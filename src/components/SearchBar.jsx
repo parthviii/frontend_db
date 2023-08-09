@@ -12,6 +12,10 @@ import UpgradeIcon from "@mui/icons-material/Upgrade";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { CSVLink } from "react-csv";
+import GradeIcon from "@mui/icons-material/Grade";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import axios from "axios";
+import { Tooltip } from '@mui/material';
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -64,6 +68,34 @@ const SearchBar = ({ data, filter }) => {
   const [isdataSorted, setDataSorted] = React.useState(0);
   const [selectedItems, setSelectedItems] = React.useState([]);
   const [csvData, setCsvData] = React.useState([]);
+  const [isFavSet, setFav] = React.useState(false);
+  const [isFavHovering, setIsFavHovering] = React.useState(false);
+  const [isSortHovering, setIsSortHovering] = React.useState(false);
+  const [isExportHovering, setIsExportHovering] = React.useState(false);
+
+  const handleFavMouseOver = () => {
+    setIsFavHovering(true);
+  };
+
+  const handleFavMouseOut = () => {
+    setIsFavHovering(false);
+  };
+
+  const handleSortMouseOver = () => {
+    setIsSortHovering(true);
+  };
+
+  const handleSortMouseOut = () => {
+    setIsSortHovering(false);
+  };
+
+  const handleExportMouseOver = () => {
+    setIsExportHovering(true);
+  };
+
+  const handleExportMouseOut = () => {
+    setIsExportHovering(false);
+  };
 
   React.useEffect(() => {
     if (search.length > 0) {
@@ -81,6 +113,11 @@ const SearchBar = ({ data, filter }) => {
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
+
+    // Function to update 'tableData' state after delete operation
+    const updateTableData = (updatedData) => {
+      setData({ nodes: updatedData });
+    };
 
   const compare = (a, b) => {
     a = a.maturitydate.split("-").join("");
@@ -112,6 +149,43 @@ const SearchBar = ({ data, filter }) => {
     setData(sortedData);
   };
 
+  const addToFavorite = async () => {
+    setFav(true);
+    selectedItems.map(async (item) => {
+      const id = item.id;
+      try {
+        const response = await axios.post(
+          "http://localhost:9090/bonds/security/fav",
+          {
+            id,
+          }
+        );
+        if (response.data === "invalid") {
+          alert("Invalid Credentials! Please try again");
+        } else {
+          console.log("added", id);
+        }
+      } catch (error) {
+        console.log("error");
+      }
+      // fetch(`http://localhost:9090/bonds/security/fav?id=${item.id}`, {
+      //   mode: "cors",
+      //   credentials: "include",
+      //   headers: {
+      //     Accept: "application/json, text/plain, */*",
+      //     "Content-type": "application/json",
+      //   },
+      // })
+      //   .then((response) => response.json())
+      //   .then((responseData) => {
+      //     console.log(responseData);
+      //   })
+      //   .catch((error) => {
+      //     console.error("Error sending data:", error);
+      //   });
+    });
+  };
+
   return (
     <>
       <Box
@@ -134,42 +208,57 @@ const SearchBar = ({ data, filter }) => {
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex", columnGap: "20px" } }}>
-            <Button size="small" variant="outlined" style={{backgroundColor: "white"}} onClick={sortByDate}>
-              {isdataSorted === 0 ? (
+          <Box sx={{ display: { xs: "none", md: "flex", columnGap: "0.5em" } }}>
+            {selectedItems.length > 0 ? (
+              <Button
+                size="small"
+                variant={isFavHovering ? "outlined" : "text"}
+                onClick={addToFavorite}
+                onMouseOver={handleFavMouseOver}
+                onMouseOut={handleFavMouseOut}
+              >
+                {isFavSet ? <GradeIcon /> : <StarBorderIcon />}
+                {isFavHovering && (
+                  <Typography className="btntext" variant="body1">
+                    Add to favorites
+                  </Typography>
+                )}
+              </Button>
+            ) : null}
+          <Tooltip title="Sort by maturity date">
+
+            <Button
+              size="small"
+              variant={isSortHovering ? "outlined" : "text"}
+              onClick={sortByDate}
+              onMouseOver={handleSortMouseOver}
+              onMouseOut={handleSortMouseOut}
+            >
+                {isdataSorted === 0 ? (
                 <SwapVertIcon />
               ) : isdataSorted < 0 ? (
                 <ArrowDownwardIcon />
               ) : (
                 <ArrowUpwardIcon />
               )}
-              <Typography
-                variant="body1"
-                noWrap
-                component="div"
-                style={{fontWeight: "bold"}}
-                sx={{ display: { xs: "none", sm: "block" } }}
-              >
-                Sort by maturity date
-              </Typography>
             </Button>
+            </Tooltip>
             <CSVLink
               className="downloadbtn"
               filename="my-file.csv"
               data={csvData}
             >
-              <Button size="small" variant="outlined" style={{backgroundColor: "white"}}>
-                <UpgradeIcon />
-                <Typography
-                  variant="body1"
-                  noWrap
-                  component="div"
-                  style={{fontWeight: "bold"}}
-                  sx={{ display: { xs: "none", sm: "block" } }}
-                >
-                  Export to CSV
-                </Typography>
-              </Button>
+            <Tooltip title="Export to CSV">  
+              <Button
+                size="small"
+                variant={isExportHovering ? "outlined": "text"}
+                onMouseOver={handleExportMouseOver}
+                onMouseOut={handleExportMouseOut}
+              >   
+                    <UpgradeIcon />
+                    </Button>
+                  </Tooltip>
+
             </CSVLink>
           </Box>
         </Toolbar>
@@ -180,6 +269,7 @@ const SearchBar = ({ data, filter }) => {
         setSelectedItems={setSelectedItems}
         filter={filter}
         setCsvData={setCsvData}
+        updateTableData={updateTableData}
       />
     </>
   );

@@ -1,13 +1,13 @@
 import React from "react";
-import { Image } from "react-bootstrap";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import {Typography} from "@mui/material";
-import '../styles/Navbar.css';
+import "../styles/Navbar.css";
+
 import { Box } from "@mui/material";
 const Navbar = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -37,22 +37,23 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarText">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a style={{color: "white", fontWeight: "500"}} className="nav-link active" aria-current="page" href="#">
+              <a
+                style={{color: "white", fontWeight: "500"}} className="nav-link active"
+                aria-current="page"
+                href="/customDashboard"
+              >
                 Custom DashBoard
               </a>
             </li>
             <li className="nav-item">
-              <a style={{color: "white", fontWeight: "500"}} className="nav-link active" href="#">
+              <a style={{color: "white", fontWeight: "500"}} className="nav-link active" href="/analytics">
                 Analytics
               </a>
             </li>
-            <li className="nav-item">
-              <a style={{color: "white", fontWeight: "500"}} className="nav-link active" href="#">
-                Pricing
-              </a>
-            </li>
           </ul>
-          <ul className="navbar-nav ml-auto mb-2 mb-lg-0"> {/* Use ml-auto to push the items to the right */}
+
+          <ul className="navbar-nav ml-auto mb-2 mb-lg-0">
+            {/* Use ml-auto to push the items to the right */}
             <li className="nav-item">
               <button className="nav-link logout-button" style={{backgroundColor: "white", padding: "4px 10px", borderRadius: "5px", color: "black"}} onClick={handleLogout} >
               <Typography

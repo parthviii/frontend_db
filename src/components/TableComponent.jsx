@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Form, Table, Pagination } from "react-bootstrap";
-import { Chip } from "@mui/material";
+import { Chip, IconButton } from "@mui/material";
 import { FlexColumnAlignCenter } from "./Containers";
 import { Typography } from "@mui/material";
+import Box from '@mui/material/Box';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import axios from 'axios'
 
+import { useNavigate, useNavigation } from "react-router-dom";
 export const tableHeaders = [
   "Security ID",
   "ISIN",
@@ -14,6 +18,7 @@ export const tableHeaders = [
   "Type",
   "Face Value",
   "Status",
+  null
 ];
 
 const TableComponent = ({
@@ -22,9 +27,10 @@ const TableComponent = ({
   setSelectedItems,
   filter,
   setCsvData,
+  updateTableData
 }) => {
   let checkedItems = selectedItems;
-
+   
   const handleCheckboxChange = (index, e) => {
     if (e.target.checked) {
       checkedItems.push(data[index]);
@@ -45,6 +51,7 @@ const TableComponent = ({
           type,
           facevalue,
           status,
+          
         }) => [
           id,
           isin,
@@ -59,7 +66,7 @@ const TableComponent = ({
       ),
     ]);
   };
-
+ 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   let filteredData = data;
@@ -105,11 +112,27 @@ const TableComponent = ({
   const handlePagination = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
+  const handleChangeDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:9090/bonds/security/delete?id=${id}`);
+      const updatedData = data.filter(item => item.id !== id);
+      // Call the function to update 'tableData' state in parent component
+      updateTableData(updatedData);
+    } catch (error) {
+      console.error("An error occurred while deleting:", error);
+      // Handle error here, display an error message, etc.
+    }
+  };  
+  const navigate = useNavigate()
+ const handleChange = (id) =>{
+  console.log(id);
+  
+ navigate(`/securityDetail/${id}`)
+ }
   return (
-    <section>
+    <Box>
       {data.length > 0 ? (
-        <div className="container card card-body temp">
+        <Box className="container card card-body temp" style={{width: "100%", margin: "0px", maxWidth: "100%"}}>
           <Table
             responsive
             hover={true}
@@ -126,6 +149,7 @@ const TableComponent = ({
             <tbody>
               {currentItems.map((item, index) => (
                 <tr
+                
                   key={item.id}
                   style={{
                     backgroundColor: index % 2 === 0 ? "#f2f2f2" : "white",
@@ -137,10 +161,13 @@ const TableComponent = ({
                       id={item.id}
                       className="custom-checkbox"
                       onChange={(e) => handleCheckboxChange(index, e)}
+                      style={{ paddingLeft: "2em" }}
                     />
                   </td>
                   <td>{item.id}</td>
-                  <td>{item.isin}</td>
+                  <td onClick={()=>handleChange(item.id)}>
+  {item.isin}
+</td>
                   <td>{item.cusip}</td>
                   <td>{item.issuer}</td>
                   <td>{item.maturitydate}</td>
@@ -153,6 +180,11 @@ const TableComponent = ({
                       color={item.status === "active" ? "success" : "error"}
                       variant="filled"
                     />
+                  </td>
+                  <td>
+                  <IconButton onClick={() => handleChangeDelete(item.id)}>
+            <DeleteOutlineIcon />
+          </IconButton>
                   </td>
                 </tr>
               ))}
@@ -171,7 +203,7 @@ const TableComponent = ({
               ))}
             </Pagination>
           </ul>
-        </div>
+        </Box>
       ) : (
         <FlexColumnAlignCenter
           style={{
@@ -189,7 +221,7 @@ const TableComponent = ({
           </Typography>
         </FlexColumnAlignCenter>
       )}
-    </section>
+    </Box>
   );
 };
 
